@@ -8,14 +8,20 @@
 
 import Foundation
 
+protocol CoinManagerDelegate {
+    func didUpdateCoin(currency: String, rate: Float)
+}
+
 class CoinManager {
+    
+    var delegate: CoinManagerDelegate?
     
     let baseURL = "https://rest.coinapi.io/v1/exchangerate/BTC"
     let apiKey = "1850B49F-BEB5-4FD4-B012-3599D2E68162"
     
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
     
-    func fetchData(exchangeCurrency: String) {
+    func fetchData(exchangeCurrency: String) -> CoinModel? {
         
         if let url = URL(string: "\(baseURL)/\(exchangeCurrency)/?apikey=\(apiKey)") {
             let session = URLSession(configuration: .default)
@@ -30,8 +36,7 @@ class CoinManager {
                             let coinData = try decoder.decode(CoinData.self, from: data)
                             let exchangeCurrency = coinData.currency
                             let rate = coinData.rate
-                            let coin = CoinModel(coinName: exchangeCurrency, rate: rate)
-                            print(coin)
+                            self.delegate?.didUpdateCoin(currency: exchangeCurrency, rate: rate)
                         } catch {
                             print(error)
                         }
@@ -42,5 +47,6 @@ class CoinManager {
             }
             .resume()
         }
+        return nil
     }
 }

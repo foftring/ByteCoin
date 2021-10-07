@@ -9,6 +9,10 @@
 import Foundation
 
 struct CoinModel {
-    let coinName: String
+    let currency: String
     let rate: Float
+    
+    var currencyString: String {
+        String(format: "%.2f", rate)
+    }
 }

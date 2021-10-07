@@ -98,7 +98,9 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="currencyLabel" destination="MAn-y0-nXv" id="VaH-US-K0J"/>
                         <outlet property="currencyPicker" destination="ct2-jk-pgH" id="b8U-ev-hKa"/>
+                        <outlet property="exchangeRateLabel" destination="N2a-Ax-iRV" id="b5o-Bt-WJI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
