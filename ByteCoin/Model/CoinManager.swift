@@ -9,7 +9,7 @@
 import Foundation
 
 protocol CoinManagerDelegate {
-    func didUpdateCoin(currency: String, rate: Float)
+    func didUpdateCoin(currency: String, rate: String)
 }
 
 class CoinManager {
@@ -21,7 +21,7 @@ class CoinManager {
     
     let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
     
-    func fetchData(exchangeCurrency: String) -> CoinModel? {
+    func fetchData(exchangeCurrency: String) {
         
         if let url = URL(string: "\(baseURL)/\(exchangeCurrency)/?apikey=\(apiKey)") {
             let session = URLSession(configuration: .default)
@@ -35,8 +35,8 @@ class CoinManager {
                         do {
                             let coinData = try decoder.decode(CoinData.self, from: data)
                             let exchangeCurrency = coinData.currency
-                            let rate = coinData.rate
-                            self.delegate?.didUpdateCoin(currency: exchangeCurrency, rate: rate)
+                            let rateString = String(format: "$%.2f", coinData.rate)
+                            self.delegate?.didUpdateCoin(currency: exchangeCurrency, rate: rateString)
                         } catch {
                             print(error)
                         }
@@ -47,6 +47,5 @@ class CoinManager {
             }
             .resume()
         }
-        return nil
     }
 }
